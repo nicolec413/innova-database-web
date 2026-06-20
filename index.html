@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Innova - Panel de Control</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Carga del cliente de Supabase desde CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <h1>Innova S.A.</h1>
+        <div id="user-session-info">
+            <span id="user-email-display">Usuario no autenticado</span>
+            <button id="btn-logout" class="hidden">Cerrar Sesión</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Sección de Autenticación -->
+        <section id="auth-section" class="card">
+            <div class="tabs">
+                <button id="tab-login" class="tab-btn active">Iniciar Sesión</button>
+                <button id="tab-register" class="tab-btn">Registrarse</button>
+            </div>
+
+            <!-- Formulario de Login -->
+            <form id="form-login" class="auth-form">
+                <h2>Iniciar Sesión</h2>
+                <div class="form-group">
+                    <label for="login-email">Correo Electrónico:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña:</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn-submit">Ingresar</button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="form-register" class="auth-form hidden">
+                <h2>Crear Cuenta Nueva</h2>
+                <div class="form-group">
+                    <label for="register-email">Correo Electrónico:</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña:</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <button type="submit" class="btn-submit">Registrar Usuario</button>
+            </form>
+            <p id="auth-message" class="message"></p>
+        </section>
+
+        <!-- Sección de Datos (Solo visible si está autenticado) -->
+        <section id="data-section" class="card hidden">
+            <h2>Panel de Datos - Innova</h2>
+            
+            <div class="selector-datos">
+                <button id="btn-show-productos" class="btn-toggle active">Ver Productos</button>
+                <button id="btn-show-clientes" class="btn-toggle">Ver Clientes</button>
+            </div>
+
+            <div class="table-container">
+                <table id="data-table">
+                    <thead id="table-head">
+                        <!-- Se genera dinámicamente -->
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Se genera dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
