@@ -1,5 +1,5 @@
-// Configuración de Supabase con las credenciales del proyecto de Nicole Salazar
-const SUPABASE_URL = "https://rnrqwbbflpjquyvipml.supabase.co"; 
+// CONFIGURACIÓN DE SUPABASE - PROYECTO NICOLE SALAZAR
+const SUPABASE_URL = "https://rnrqwbbflpjquyjvipml.supabase.co"; 
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJucnF3YmJmbHBqcXV5anZpcG1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MjEyMzEsImV4cCI6MjA5NzQ5NzIzMX0.E7X68ROTKhLyGCVHlV_gdutImCrO5KSi-JYp9Y-btGM"; 
 
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -46,6 +46,7 @@ formRegister.addEventListener('submit', async (e) => {
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
 
+    authMessage.style.color = 'var(--text-main)';
     authMessage.textContent = "Procesando...";
     
     const { data, error } = await _supabase.auth.signUp({
@@ -54,11 +55,11 @@ formRegister.addEventListener('submit', async (e) => {
     });
 
     if (error) {
-        authMessage.style.color = 'red';
+        authMessage.style.color = 'var(--error)';
         authMessage.textContent = `Error: ${error.message}`;
     } else {
-        authMessage.style.color = 'green';
-        authMessage.textContent = "Registro exitoso. Revise su correo para confirmar o intente iniciar sesión.";
+        authMessage.style.color = 'var(--success)';
+        authMessage.textContent = "Registro exitoso. Ya puede intentar iniciar sesión.";
         formRegister.reset();
     }
 });
@@ -69,6 +70,7 @@ formLogin.addEventListener('submit', async (e) => {
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
+    authMessage.style.color = 'var(--text-main)';
     authMessage.textContent = "Verificando...";
 
     const { data, error } = await _supabase.auth.signInWithPassword({
@@ -77,10 +79,10 @@ formLogin.addEventListener('submit', async (e) => {
     });
 
     if (error) {
-        authMessage.style.color = 'red';
+        authMessage.style.color = 'var(--error)';
         authMessage.textContent = `Error: ${error.message}`;
     } else {
-        authMessage.style.color = 'green';
+        authMessage.style.color = 'var(--success)';
         authMessage.textContent = "Conexión exitosa.";
         formLogin.reset();
         checkUserSession();
@@ -136,13 +138,17 @@ async function loadProductos() {
         tableBody.innerHTML = `<tr><td colspan="5">Error: ${error.message}</td></tr>`;
     } else {
         tableBody.innerHTML = '';
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5">No hay productos registrados.</td></tr>';
+            return;
+        }
         data.forEach(item => {
             tableBody.innerHTML += `
                 <tr>
                     <td>${item.id}</td>
                     <td>${item.nombre}</td>
                     <td>${item.descripcion}</td>
-                    <td>$${item.precio.toFixed(2)}</td>
+                    <td>$${parseFloat(item.precio).toFixed(2)}</td>
                     <td>${item.stock}</td>
                 </tr>
             `;
@@ -175,6 +181,10 @@ async function loadClientes() {
         tableBody.innerHTML = `<tr><td colspan="5">Error: ${error.message}</td></tr>`;
     } else {
         tableBody.innerHTML = '';
+        if (data.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="5">No hay clientes registrados.</td></tr>';
+            return;
+        }
         data.forEach(item => {
             tableBody.innerHTML += `
                 <tr>
